@@ -1,0 +1,56 @@
+# DentoRoute confidence-gated routing policy
+#
+# RESEARCH-DEMO THRESHOLDS ONLY. These are NOT clinical thresholds, were not
+# derived from clinical data, and must not be used for real triage.
+# Change them here, not in Python code.
+
+version: 1
+name: legacy
+rules: legacy
+# LEGACY policy (v1). Kept ONLY as the comparison baseline for the safety-gate study.
+# It lets clean URGENT calls through to automation. Do not use it as the active policy.
+disclaimer: "Research-demo thresholds, not clinical thresholds."
+
+# Evaluated top to bottom; the first rule that fires decides the route.
+thresholds:
+  # 0. Fail-safe: any invalid / missing model output -> human_review (hard-coded, not a threshold)
+
+  # 1. Escalate to a human when the model says human review is likely needed.
+  human_review_probability: 0.80
+
+  # 2. Urgent review when urgency is high or same-day review is likely.
+  #    urgency_score_urgent is on the 0..3 Score scale
+  #    (0=ROUTINE, 1=PRIORITY, 2=URGENT, 3=EMERGENCY). 2.5 = "between URGENT and EMERGENCY".
+  urgency_score_urgent: 2.5
+  same_day_probability: 0.80
+  infection_probability_urgent: 0.85
+
+  # 3. Automated specialty route only when the specialty answer is concentrated enough.
+  specialty_confidence: 0.60
+  specialty_top_probability: 0.55
+  # If urgency itself is split across levels, do not automate.
+  urgency_confidence_min: 0.40
+
+# Bands used purely for communicating uncertainty in the UI.
+confidence_bands:
+  high: 0.80    # confidence >= high   -> "High confidence"
+  medium: 0.50  # confidence >= medium -> "Medium confidence", else "Low confidence"
+
+# Human-readable workflow queue names shown in the UI.
+route_labels:
+  escalate_to_human: "HUMAN REVIEW (ESCALATED)"
+  urgent_review: "URGENT HUMAN REVIEW"
+  human_review: "HUMAN REVIEW (LOW CONFIDENCE)"
+  automated_specialty_route: "{specialty} REVIEW"
+
+specialty_labels:
+  general_dentistry: "GENERAL DENTISTRY"
+  endodontics: "ENDODONTIC"
+  periodontics: "PERIODONTAL"
+  oral_surgery: "ORAL SURGERY"
+  prosthodontics: "PROSTHODONTIC"
+  orthodontics: "ORTHODONTIC"
+  pediatric_dentistry: "PEDIATRIC DENTISTRY"
+  oral_medicine: "ORAL MEDICINE"
+  oral_pathology: "ORAL PATHOLOGY"
+  emergency_dental_service: "EMERGENCY DENTAL SERVICE"

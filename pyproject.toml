@@ -1,0 +1,14 @@
+[project]
+name = "dentoroute"
+version = "0.1.0"
+description = "DentoRoute - research prototype: probabilistic dental triage and referral routing demo (synthetic data only)"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.coverage.run]
+source = ["backend"]
+omit = ["backend/main.py"]

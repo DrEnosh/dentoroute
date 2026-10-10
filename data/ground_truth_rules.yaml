@@ -1,0 +1,389 @@
+# ============================================================================
+# EDUCATIONAL SYNTHETIC BENCHMARK RULES
+# ----------------------------------------------------------------------------
+# These rules are a transparent, deterministic labeling rubric for SYNTHETIC
+# cases. They are "expert-inspired" in spirit only. They do NOT reproduce any
+# clinical guideline, were NOT validated by clinicians, and must NOT be used
+# for real triage, diagnosis or treatment decisions.
+#
+# Neither Claude nor Jev was used to produce these labels.
+#
+# Rule semantics
+#   urgency / infection_concern / same_day_review / human_review /
+#   referral_priority : every matching rule contributes; for ordered levels the
+#                       HIGHEST matching level wins; for booleans ANY match = true.
+#   specialty         : rules are ordered; the FIRST matching rule wins.
+#   complexity        : matching rules add points; thresholds map points -> level.
+#
+# Condition syntax
+#   leaf : {field: <name>, op: <eq|ne|gt|gte|lt|lte|in|contains|contains_any>, value: <v>}
+#   all  : {all: [<cond>, ...]}     any : {any: [<cond>, ...]}     not : {not: <cond>}
+#
+# Derived fields available in addition to the case-state fields:
+#   medical_history_count, medication_count, has_anticoagulant,
+#   immunocompromised, tobacco_use, urgency_idx (0-3), infection_concern,
+#   same_day_review, complexity_idx (0-3)
+# ============================================================================
+
+meta:
+  title: "Educational synthetic benchmark rules"
+  version: 1
+  disclaimer: >-
+    Educational synthetic benchmark rules. Not clinical guidelines. Not clinically validated.
+
+# ---------------------------------------------------------------------------
+urgency:
+  levels: [ROUTINE, PRIORITY, URGENT, EMERGENCY]
+  default: ROUTINE
+  rules:
+    # --- EMERGENCY ---------------------------------------------------------
+    - id: U_E1_airway_or_swallowing
+      level: EMERGENCY
+      description: Difficulty breathing or swallowing together with swelling.
+      when:
+        any:
+          - {field: difficulty_breathing, op: eq, value: true}
+          - all:
+              - {field: difficulty_swallowing, op: eq, value: true}
+              - {field: swelling, op: eq, value: true}
+    - id: U_E2_swelling_fever_trismus
+      level: EMERGENCY
+      description: Swelling with fever and trismus (jaw opening restricted).
+      when:
+        all:
+          - {field: swelling, op: eq, value: true}
+          - {field: fever, op: eq, value: true}
+          - {field: trismus, op: eq, value: true}
+    - id: U_E3_progressive_swelling_fever_lymph
+      level: EMERGENCY
+      description: Progressive swelling with fever and lymphadenopathy.
+      when:
+        all:
+          - {field: swelling, op: eq, value: true}
+          - {field: fever, op: eq, value: true}
+          - {field: progressive_symptoms, op: eq, value: true}
+          - {field: lymphadenopathy, op: eq, value: true}
+    # --- URGENT ------------------------------------------------------------
+    - id: U_U1_swelling_fever
+      level: URGENT
+      when:
+        all:
+          - {field: swelling, op: eq, value: true}
+          - {field: fever, op: eq, value: true}
+    - id: U_U2_swelling_progressive
+      level: URGENT
+      when:
+        all:
+          - {field: swelling, op: eq, value: true}
+          - {field: progressive_symptoms, op: eq, value: true}
+    - id: U_U3_swelling_trismus
+      level: URGENT
+      when:
+        all:
+          - {field: swelling, op: eq, value: true}
+          - {field: trismus, op: eq, value: true}
+    - id: U_U4_avulsion
+      level: URGENT
+      description: Time-critical dental trauma.
+      when: {field: tooth_avulsion, op: eq, value: true}
+    - id: U_U5_severe_trauma_pain
+      level: URGENT
+      when:
+        all:
+          - {field: trauma, op: eq, value: true}
+          - {field: pain_severity, op: gte, value: 7}
+    - id: U_U6_severe_throbbing_pain
+      level: URGENT
+      when:
+        all:
+          - {field: pain_severity, op: gte, value: 8}
+          - {field: pain_character, op: in, value: [throbbing, spontaneous]}
+    - id: U_U7_postprocedure_bleeding
+      level: URGENT
+      when:
+        all:
+          - {field: bleeding, op: eq, value: true}
+          - {field: recent_extraction_or_procedure, op: eq, value: true}
+          - {field: has_anticoagulant, op: eq, value: true}
+    - id: U_U8_pus_with_systemic_signs
+      level: URGENT
+      when:
+        all:
+          - {field: pus_or_drainage, op: eq, value: true}
+          - {field: fever, op: eq, value: true}
+    # --- PRIORITY ----------------------------------------------------------
+    - id: U_P1_moderate_pain
+      level: PRIORITY
+      when: {field: pain_severity, op: gte, value: 5}
+    - id: U_P2_swelling
+      level: PRIORITY
+      when: {field: swelling, op: eq, value: true}
+    - id: U_P3_fever_with_dental_pain
+      level: PRIORITY
+      when:
+        all:
+          - {field: fever, op: eq, value: true}
+          - {field: pain_severity, op: gte, value: 2}
+    - id: U_P4_trauma_or_fracture
+      level: PRIORITY
+      when:
+        any:
+          - {field: trauma, op: eq, value: true}
+          - {field: tooth_fracture, op: eq, value: true}
+    - id: U_P5_persistent_lesion
+      level: PRIORITY
+      when:
+        all:
+          - {field: lesion_present, op: eq, value: true}
+          - {field: lesion_duration_weeks, op: gte, value: 3}
+    - id: U_P6_jaw_locking
+      level: PRIORITY
+      when: {field: jaw_locking, op: eq, value: true}
+    - id: U_P7_postprocedure_pain
+      level: PRIORITY
+      when:
+        all:
+          - {field: recent_extraction_or_procedure, op: eq, value: true}
+          - {field: pain_severity, op: gte, value: 4}
+    - id: U_P8_postprocedure_bleeding
+      level: PRIORITY
+      when:
+        all:
+          - {field: recent_extraction_or_procedure, op: eq, value: true}
+          - {field: bleeding, op: eq, value: true}
+    - id: U_P9_pus
+      level: PRIORITY
+      when: {field: pus_or_drainage, op: eq, value: true}
+    - id: U_P10_mobile_tooth_with_pain
+      level: PRIORITY
+      when:
+        all:
+          - {field: mobility, op: eq, value: true}
+          - {field: pain_severity, op: gte, value: 3}
+
+# ---------------------------------------------------------------------------
+specialty:
+  default: general_dentistry
+  rules:
+    - id: S01_emergency_airway
+      specialty: emergency_dental_service
+      when:
+        any:
+          - {field: difficulty_breathing, op: eq, value: true}
+          - all:
+              - {field: difficulty_swallowing, op: eq, value: true}
+              - {field: swelling, op: eq, value: true}
+    - id: S02_emergency_systemic_infection
+      specialty: emergency_dental_service
+      when:
+        all:
+          - {field: swelling, op: eq, value: true}
+          - {field: fever, op: eq, value: true}
+          - {field: trismus, op: eq, value: true}
+    - id: S03_avulsion
+      specialty: emergency_dental_service
+      when: {field: tooth_avulsion, op: eq, value: true}
+    - id: S04_pediatric
+      specialty: pediatric_dentistry
+      when: {field: age, op: lt, value: 13}
+    - id: S05_persistent_lesion_pathology
+      specialty: oral_pathology
+      when:
+        all:
+          - {field: lesion_present, op: eq, value: true}
+          - {field: lesion_duration_weeks, op: gte, value: 6}
+    - id: S06_lesion_oral_medicine
+      specialty: oral_medicine
+      when: {field: lesion_present, op: eq, value: true}
+    - id: S07_tmj_oral_medicine
+      specialty: oral_medicine
+      when:
+        any:
+          - {field: jaw_clicking, op: eq, value: true}
+          - {field: jaw_locking, op: eq, value: true}
+    - id: S08_third_molar_oral_surgery
+      specialty: oral_surgery
+      when: {field: third_molar_symptoms, op: eq, value: true}
+    - id: S09_swelling_systemic_oral_surgery
+      specialty: oral_surgery
+      when:
+        all:
+          - {field: swelling, op: eq, value: true}
+          - {field: gingival_involvement, op: eq, value: false}
+          - any:
+              - {field: fever, op: eq, value: true}
+              - {field: progressive_symptoms, op: eq, value: true}
+    - id: S10_postprocedure_oral_surgery
+      specialty: oral_surgery
+      when:
+        all:
+          - {field: recent_extraction_or_procedure, op: eq, value: true}
+          - {field: pain_severity, op: gte, value: 5}
+    - id: S11_periodontal
+      specialty: periodontics
+      when: {field: gingival_involvement, op: eq, value: true}
+    - id: S12_orthodontic
+      specialty: orthodontics
+      when: {field: orthodontic_appliance_issue, op: eq, value: true}
+    - id: S13_prosthodontic
+      specialty: prosthodontics
+      when: {field: restoration_or_prosthesis_issue, op: eq, value: true}
+    - id: S14_endodontic_pain_pattern
+      specialty: endodontics
+      when:
+        all:
+          - {field: pain_severity, op: gte, value: 5}
+          - {field: pain_character, op: in, value: [throbbing, spontaneous, lingering]}
+    - id: S15_endodontic_biting_pain
+      specialty: endodontics
+      when:
+        all:
+          - {field: pain_severity, op: gte, value: 4}
+          - {field: pain_trigger, op: contains, value: biting}
+    - id: S16_endodontic_prior_rct
+      specialty: endodontics
+      when:
+        all:
+          - {field: previous_root_canal, op: eq, value: true}
+          - {field: pain_severity, op: gte, value: 3}
+    - id: S17_endodontic_fracture_pain
+      specialty: endodontics
+      when:
+        all:
+          - {field: tooth_fracture, op: eq, value: true}
+          - {field: pain_severity, op: gte, value: 5}
+
+# ---------------------------------------------------------------------------
+infection_concern:
+  rules:
+    - id: I1_swelling_with_systemic_or_progressive
+      when:
+        all:
+          - {field: swelling, op: eq, value: true}
+          - any:
+              - {field: fever, op: eq, value: true}
+              - {field: progressive_symptoms, op: eq, value: true}
+              - {field: lymphadenopathy, op: eq, value: true}
+              - {field: trismus, op: eq, value: true}
+    - id: I2_pus
+      when: {field: pus_or_drainage, op: eq, value: true}
+    - id: I3_swelling_with_significant_pain_pattern
+      when:
+        all:
+          - {field: swelling, op: eq, value: true}
+          - {field: pain_severity, op: gte, value: 6}
+          - any:
+              - {field: previous_root_canal, op: eq, value: true}
+              - {field: pain_trigger, op: contains, value: biting}
+    - id: I4_swallowing_difficulty
+      when: {field: difficulty_swallowing, op: eq, value: true}
+    - id: I5_fever_with_localized_dental_pain
+      when:
+        all:
+          - {field: fever, op: eq, value: true}
+          - {field: pain_severity, op: gte, value: 4}
+          - {field: tooth_region, op: ne, value: null}
+
+# ---------------------------------------------------------------------------
+same_day_review:
+  rules:
+    - id: D1_urgent_or_emergency
+      when: {field: urgency_idx, op: gte, value: 2}
+    - id: D2_infection_concern
+      when: {field: infection_concern, op: eq, value: true}
+    - id: D3_avulsion
+      when: {field: tooth_avulsion, op: eq, value: true}
+    - id: D4_bleeding_after_procedure
+      when:
+        all:
+          - {field: bleeding, op: eq, value: true}
+          - {field: recent_extraction_or_procedure, op: eq, value: true}
+          - {field: pain_severity, op: gte, value: 5}
+
+# ---------------------------------------------------------------------------
+human_review:
+  rules:
+    - id: H1_emergency
+      when: {field: urgency_idx, op: gte, value: 3}
+    - id: H2_sparse_information
+      when: {field: info_completeness, op: eq, value: sparse}
+    - id: H3_partial_information_with_elevated_urgency
+      when:
+        all:
+          - {field: info_completeness, op: eq, value: partial}
+          - {field: urgency_idx, op: gte, value: 1}
+    - id: H4_persistent_lesion
+      when:
+        all:
+          - {field: lesion_present, op: eq, value: true}
+          - {field: lesion_duration_weeks, op: gte, value: 3}
+    - id: H5_infection_with_fever
+      when:
+        all:
+          - {field: infection_concern, op: eq, value: true}
+          - {field: fever, op: eq, value: true}
+    - id: H6_risk_modifier_with_acute_issue
+      when:
+        all:
+          - any:
+              - {field: immunocompromised, op: eq, value: true}
+              - {field: has_anticoagulant, op: eq, value: true}
+          - any:
+              - {field: infection_concern, op: eq, value: true}
+              - {field: bleeding, op: eq, value: true}
+              - {field: recent_extraction_or_procedure, op: eq, value: true}
+    - id: H7_pediatric_trauma
+      when:
+        all:
+          - {field: age, op: lt, value: 13}
+          - {field: trauma, op: eq, value: true}
+
+# ---------------------------------------------------------------------------
+complexity:
+  levels: [SIMPLE, MODERATE, COMPLEX, HIGHLY_COMPLEX]
+  # points -> level: SIMPLE <2, MODERATE 2-3, COMPLEX 4-5, HIGHLY_COMPLEX >=6
+  thresholds: {MODERATE: 2, COMPLEX: 4, HIGHLY_COMPLEX: 6}
+  rules:
+    - {id: C1_history, points: 1, when: {field: medical_history_count, op: gte, value: 1}}
+    - {id: C2_history_multiple, points: 1, when: {field: medical_history_count, op: gte, value: 3}}
+    - {id: C3_polypharmacy, points: 1, when: {field: medication_count, op: gte, value: 3}}
+    - {id: C4_anticoagulant, points: 1, when: {field: has_anticoagulant, op: eq, value: true}}
+    - {id: C5_immunocompromised, points: 1, when: {field: immunocompromised, op: eq, value: true}}
+    - {id: C6_infection, points: 1, when: {field: infection_concern, op: eq, value: true}}
+    - {id: C7_swelling, points: 1, when: {field: swelling, op: eq, value: true}}
+    - {id: C8_trismus, points: 1, when: {field: trismus, op: eq, value: true}}
+    - {id: C9_pediatric, points: 1, when: {field: age, op: lt, value: 13}}
+    - {id: C10_elderly, points: 1, when: {field: age, op: gte, value: 75}}
+    - {id: C11_lesion, points: 1, when: {field: lesion_present, op: eq, value: true}}
+    - {id: C12_trauma, points: 1, when: {field: trauma, op: eq, value: true}}
+    - {id: C13_sparse_info, points: 1, when: {field: info_completeness, op: eq, value: sparse}}
+    - {id: C14_airway, points: 2, when: {field: difficulty_breathing, op: eq, value: true}}
+    - {id: C15_swallowing, points: 1, when: {field: difficulty_swallowing, op: eq, value: true}}
+    - {id: C16_allergies, points: 1, when: {field: allergies_present, op: eq, value: true}}
+
+# ---------------------------------------------------------------------------
+referral_priority:
+  levels: [LOW, MODERATE, HIGH, CRITICAL]
+  default: LOW
+  rules:
+    - id: R1_critical
+      level: CRITICAL
+      when: {field: urgency_idx, op: gte, value: 3}
+    - id: R2_high
+      level: HIGH
+      when: {field: urgency_idx, op: gte, value: 2}
+    - id: R3_moderate_urgency
+      level: MODERATE
+      when: {field: urgency_idx, op: gte, value: 1}
+    - id: R4_moderate_lesion
+      level: MODERATE
+      when: {field: lesion_present, op: eq, value: true}
+    - id: R5_moderate_complex
+      level: MODERATE
+      when: {field: complexity_idx, op: gte, value: 2}
+    - id: R6_high_infection_complex
+      level: HIGH
+      when:
+        all:
+          - {field: infection_concern, op: eq, value: true}
+          - {field: complexity_idx, op: gte, value: 2}

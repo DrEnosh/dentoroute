@@ -1,0 +1,724 @@
+[
+ {
+  "patient_id": "DEMO-01",
+  "category": "routine_examination",
+  "state": {
+   "patient_id": "DEMO-01",
+   "age": 34,
+   "sex": "female",
+   "chief_complaint": "routine dental check-up and cleaning",
+   "duration": null,
+   "pain_severity": 0,
+   "pain_character": null,
+   "pain_trigger": [],
+   "swelling": false,
+   "swelling_location": null,
+   "progressive_symptoms": false,
+   "pus_or_drainage": false,
+   "fever": false,
+   "temperature_c": 36.7,
+   "trismus": false,
+   "lymphadenopathy": false,
+   "difficulty_swallowing": false,
+   "difficulty_breathing": false,
+   "trauma": false,
+   "tooth_fracture": false,
+   "tooth_avulsion": false,
+   "previous_root_canal": false,
+   "recent_extraction_or_procedure": false,
+   "tooth_region": null,
+   "bleeding": false,
+   "mobility": false,
+   "gingival_involvement": false,
+   "third_molar_symptoms": false,
+   "lesion_present": false,
+   "lesion_duration_weeks": null,
+   "jaw_clicking": false,
+   "jaw_locking": false,
+   "restoration_or_prosthesis_issue": false,
+   "orthodontic_appliance_issue": false,
+   "administrative_request": false,
+   "info_completeness": "complete",
+   "medical_history": [],
+   "allergies": [],
+   "medications": []
+  },
+  "reference": {
+   "urgency": "ROUTINE",
+   "specialty": "general_dentistry",
+   "infection_concern": false,
+   "same_day_review": false,
+   "human_review": false,
+   "complexity": "SIMPLE",
+   "referral_priority": "LOW",
+   "fired_rules": {
+    "urgency": [],
+    "infection_concern": [],
+    "same_day_review": [],
+    "specialty": [],
+    "human_review": [],
+    "complexity": [],
+    "referral_priority": []
+   }
+  }
+ },
+ {
+  "patient_id": "DEMO-02",
+  "category": "reversible_pulpitis_like",
+  "state": {
+   "patient_id": "DEMO-02",
+   "age": 27,
+   "sex": "male",
+   "chief_complaint": "short sharp pain with cold drinks that stops quickly",
+   "duration": "1 week",
+   "pain_severity": 3,
+   "pain_character": "sharp_brief",
+   "pain_trigger": [
+    "cold"
+   ],
+   "swelling": false,
+   "swelling_location": null,
+   "progressive_symptoms": false,
+   "pus_or_drainage": false,
+   "fever": false,
+   "temperature_c": 36.8,
+   "trismus": false,
+   "lymphadenopathy": false,
+   "difficulty_swallowing": false,
+   "difficulty_breathing": false,
+   "trauma": false,
+   "tooth_fracture": false,
+   "tooth_avulsion": false,
+   "previous_root_canal": false,
+   "recent_extraction_or_procedure": false,
+   "tooth_region": "maxillary premolar",
+   "bleeding": false,
+   "mobility": false,
+   "gingival_involvement": false,
+   "third_molar_symptoms": false,
+   "lesion_present": false,
+   "lesion_duration_weeks": null,
+   "jaw_clicking": false,
+   "jaw_locking": false,
+   "restoration_or_prosthesis_issue": false,
+   "orthodontic_appliance_issue": false,
+   "administrative_request": false,
+   "info_completeness": "complete",
+   "medical_history": [],
+   "allergies": [],
+   "medications": []
+  },
+  "reference": {
+   "urgency": "ROUTINE",
+   "specialty": "general_dentistry",
+   "infection_concern": false,
+   "same_day_review": false,
+   "human_review": false,
+   "complexity": "SIMPLE",
+   "referral_priority": "LOW",
+   "fired_rules": {
+    "urgency": [],
+    "infection_concern": [],
+    "same_day_review": [],
+    "specialty": [],
+    "human_review": [],
+    "complexity": [],
+    "referral_priority": []
+   }
+  }
+ },
+ {
+  "patient_id": "DEMO-03",
+  "category": "severe_pulpal_pain",
+  "state": {
+   "patient_id": "DEMO-03",
+   "age": 41,
+   "sex": "female",
+   "chief_complaint": "severe throbbing pain in a lower molar, woke me at night",
+   "duration": "3 days",
+   "pain_severity": 9,
+   "pain_character": "throbbing",
+   "pain_trigger": [
+    "hot",
+    "lying down"
+   ],
+   "swelling": false,
+   "swelling_location": null,
+   "progressive_symptoms": false,
+   "pus_or_drainage": false,
+   "fever": false,
+   "temperature_c": 36.9,
+   "trismus": false,
+   "lymphadenopathy": false,
+   "difficulty_swallowing": false,
+   "difficulty_breathing": false,
+   "trauma": false,
+   "tooth_fracture": false,
+   "tooth_avulsion": false,
+   "previous_root_canal": false,
+   "recent_extraction_or_procedure": false,
+   "tooth_region": "mandibular molar",
+   "bleeding": false,
+   "mobility": false,
+   "gingival_involvement": false,
+   "third_molar_symptoms": false,
+   "lesion_present": false,
+   "lesion_duration_weeks": null,
+   "jaw_clicking": false,
+   "jaw_locking": false,
+   "restoration_or_prosthesis_issue": false,
+   "orthodontic_appliance_issue": false,
+   "administrative_request": false,
+   "info_completeness": "complete",
+   "medical_history": [],
+   "allergies": [],
+   "medications": []
+  },
+  "reference": {
+   "urgency": "URGENT",
+   "specialty": "endodontics",
+   "infection_concern": false,
+   "same_day_review": true,
+   "human_review": false,
+   "complexity": "SIMPLE",
+   "referral_priority": "HIGH",
+   "fired_rules": {
+    "urgency": [
+     "U_U6_severe_throbbing_pain",
+     "U_P1_moderate_pain"
+    ],
+    "infection_concern": [],
+    "same_day_review": [
+     "D1_urgent_or_emergency"
+    ],
+    "specialty": [
+     "S14_endodontic_pain_pattern"
+    ],
+    "human_review": [],
+    "complexity": [],
+    "referral_priority": [
+     "R2_high",
+     "R3_moderate_urgency"
+    ]
+   }
+  }
+ },
+ {
+  "patient_id": "DEMO-04",
+  "category": "facial_swelling",
+  "state": {
+   "patient_id": "DEMO-04",
+   "age": 28,
+   "sex": "male",
+   "chief_complaint": "severe lower right posterior tooth pain with facial swelling",
+   "duration": "2 days",
+   "pain_severity": 8,
+   "pain_character": "throbbing",
+   "pain_trigger": [
+    "biting"
+   ],
+   "swelling": true,
+   "swelling_location": "right mandibular buccal region",
+   "progressive_symptoms": true,
+   "pus_or_drainage": false,
+   "fever": true,
+   "temperature_c": 38.1,
+   "trismus": false,
+   "lymphadenopathy": false,
+   "difficulty_swallowing": false,
+   "difficulty_breathing": false,
+   "trauma": false,
+   "tooth_fracture": false,
+   "tooth_avulsion": false,
+   "previous_root_canal": true,
+   "recent_extraction_or_procedure": false,
+   "tooth_region": "mandibular molar",
+   "bleeding": false,
+   "mobility": false,
+   "gingival_involvement": false,
+   "third_molar_symptoms": false,
+   "lesion_present": false,
+   "lesion_duration_weeks": null,
+   "jaw_clicking": false,
+   "jaw_locking": false,
+   "restoration_or_prosthesis_issue": false,
+   "orthodontic_appliance_issue": false,
+   "administrative_request": false,
+   "info_completeness": "complete",
+   "medical_history": [],
+   "allergies": [],
+   "medications": []
+  },
+  "reference": {
+   "urgency": "URGENT",
+   "specialty": "oral_surgery",
+   "infection_concern": true,
+   "same_day_review": true,
+   "human_review": true,
+   "complexity": "MODERATE",
+   "referral_priority": "HIGH",
+   "fired_rules": {
+    "urgency": [
+     "U_U1_swelling_fever",
+     "U_U2_swelling_progressive",
+     "U_U6_severe_throbbing_pain",
+     "U_P1_moderate_pain",
+     "U_P2_swelling",
+     "U_P3_fever_with_dental_pain"
+    ],
+    "infection_concern": [
+     "I1_swelling_with_systemic_or_progressive",
+     "I3_swelling_with_significant_pain_pattern",
+     "I5_fever_with_localized_dental_pain"
+    ],
+    "same_day_review": [
+     "D1_urgent_or_emergency",
+     "D2_infection_concern"
+    ],
+    "specialty": [
+     "S09_swelling_systemic_oral_surgery"
+    ],
+    "human_review": [
+     "H5_infection_with_fever"
+    ],
+    "complexity": [
+     "C6_infection",
+     "C7_swelling"
+    ],
+    "referral_priority": [
+     "R2_high",
+     "R3_moderate_urgency"
+    ]
+   }
+  }
+ },
+ {
+  "patient_id": "DEMO-05",
+  "category": "impacted_third_molar",
+  "state": {
+   "patient_id": "DEMO-05",
+   "age": 22,
+   "sex": "female",
+   "chief_complaint": "pain behind the last lower tooth, partially erupted wisdom tooth",
+   "duration": "1 week",
+   "pain_severity": 5,
+   "pain_character": "dull",
+   "pain_trigger": [
+    "chewing"
+   ],
+   "swelling": false,
+   "swelling_location": null,
+   "progressive_symptoms": false,
+   "pus_or_drainage": false,
+   "fever": false,
+   "temperature_c": 36.8,
+   "trismus": false,
+   "lymphadenopathy": false,
+   "difficulty_swallowing": false,
+   "difficulty_breathing": false,
+   "trauma": false,
+   "tooth_fracture": false,
+   "tooth_avulsion": false,
+   "previous_root_canal": false,
+   "recent_extraction_or_procedure": false,
+   "tooth_region": "mandibular third molar",
+   "bleeding": false,
+   "mobility": false,
+   "gingival_involvement": false,
+   "third_molar_symptoms": true,
+   "lesion_present": false,
+   "lesion_duration_weeks": null,
+   "jaw_clicking": false,
+   "jaw_locking": false,
+   "restoration_or_prosthesis_issue": false,
+   "orthodontic_appliance_issue": false,
+   "administrative_request": false,
+   "info_completeness": "complete",
+   "medical_history": [],
+   "allergies": [],
+   "medications": []
+  },
+  "reference": {
+   "urgency": "PRIORITY",
+   "specialty": "oral_surgery",
+   "infection_concern": false,
+   "same_day_review": false,
+   "human_review": false,
+   "complexity": "SIMPLE",
+   "referral_priority": "MODERATE",
+   "fired_rules": {
+    "urgency": [
+     "U_P1_moderate_pain"
+    ],
+    "infection_concern": [],
+    "same_day_review": [],
+    "specialty": [
+     "S08_third_molar_oral_surgery"
+    ],
+    "human_review": [],
+    "complexity": [],
+    "referral_priority": [
+     "R3_moderate_urgency"
+    ]
+   }
+  }
+ },
+ {
+  "patient_id": "DEMO-06",
+  "category": "periodontal_complaint",
+  "state": {
+   "patient_id": "DEMO-06",
+   "age": 58,
+   "sex": "male",
+   "chief_complaint": "receding gums and teeth feeling loose",
+   "duration": "over a year",
+   "pain_severity": 2,
+   "pain_character": null,
+   "pain_trigger": [],
+   "swelling": false,
+   "swelling_location": null,
+   "progressive_symptoms": false,
+   "pus_or_drainage": false,
+   "fever": false,
+   "temperature_c": null,
+   "trismus": false,
+   "lymphadenopathy": false,
+   "difficulty_swallowing": false,
+   "difficulty_breathing": false,
+   "trauma": false,
+   "tooth_fracture": false,
+   "tooth_avulsion": false,
+   "previous_root_canal": false,
+   "recent_extraction_or_procedure": false,
+   "tooth_region": null,
+   "bleeding": true,
+   "mobility": true,
+   "gingival_involvement": true,
+   "third_molar_symptoms": false,
+   "lesion_present": false,
+   "lesion_duration_weeks": null,
+   "jaw_clicking": false,
+   "jaw_locking": false,
+   "restoration_or_prosthesis_issue": false,
+   "orthodontic_appliance_issue": false,
+   "administrative_request": false,
+   "info_completeness": "complete",
+   "medical_history": [
+    "type 2 diabetes",
+    "tobacco use"
+   ],
+   "allergies": [],
+   "medications": [
+    "metformin"
+   ]
+  },
+  "reference": {
+   "urgency": "ROUTINE",
+   "specialty": "periodontics",
+   "infection_concern": false,
+   "same_day_review": false,
+   "human_review": false,
+   "complexity": "SIMPLE",
+   "referral_priority": "LOW",
+   "fired_rules": {
+    "urgency": [],
+    "infection_concern": [],
+    "same_day_review": [],
+    "specialty": [
+     "S11_periodontal"
+    ],
+    "human_review": [],
+    "complexity": [
+     "C1_history"
+    ],
+    "referral_priority": []
+   }
+  }
+ },
+ {
+  "patient_id": "DEMO-07",
+  "category": "dental_trauma",
+  "state": {
+   "patient_id": "DEMO-07",
+   "age": 16,
+   "sex": "male",
+   "chief_complaint": "front tooth knocked out completely in a sports injury",
+   "duration": "a few hours ago",
+   "pain_severity": 6,
+   "pain_character": null,
+   "pain_trigger": [],
+   "swelling": false,
+   "swelling_location": null,
+   "progressive_symptoms": false,
+   "pus_or_drainage": false,
+   "fever": false,
+   "temperature_c": null,
+   "trismus": false,
+   "lymphadenopathy": false,
+   "difficulty_swallowing": false,
+   "difficulty_breathing": false,
+   "trauma": true,
+   "tooth_fracture": false,
+   "tooth_avulsion": true,
+   "previous_root_canal": false,
+   "recent_extraction_or_procedure": false,
+   "tooth_region": "maxillary incisor",
+   "bleeding": true,
+   "mobility": false,
+   "gingival_involvement": false,
+   "third_molar_symptoms": false,
+   "lesion_present": false,
+   "lesion_duration_weeks": null,
+   "jaw_clicking": false,
+   "jaw_locking": false,
+   "restoration_or_prosthesis_issue": false,
+   "orthodontic_appliance_issue": false,
+   "administrative_request": false,
+   "info_completeness": "complete",
+   "medical_history": [],
+   "allergies": [],
+   "medications": []
+  },
+  "reference": {
+   "urgency": "URGENT",
+   "specialty": "emergency_dental_service",
+   "infection_concern": false,
+   "same_day_review": true,
+   "human_review": false,
+   "complexity": "SIMPLE",
+   "referral_priority": "HIGH",
+   "fired_rules": {
+    "urgency": [
+     "U_U4_avulsion",
+     "U_P1_moderate_pain",
+     "U_P4_trauma_or_fracture"
+    ],
+    "infection_concern": [],
+    "same_day_review": [
+     "D1_urgent_or_emergency",
+     "D3_avulsion"
+    ],
+    "specialty": [
+     "S03_avulsion"
+    ],
+    "human_review": [],
+    "complexity": [
+     "C12_trauma"
+    ],
+    "referral_priority": [
+     "R2_high",
+     "R3_moderate_urgency"
+    ]
+   }
+  }
+ },
+ {
+  "patient_id": "DEMO-08",
+  "category": "oral_lesion",
+  "state": {
+   "patient_id": "DEMO-08",
+   "age": 63,
+   "sex": "male",
+   "chief_complaint": "non-healing ulcer on the lateral tongue",
+   "duration": "several weeks",
+   "pain_severity": 1,
+   "pain_character": null,
+   "pain_trigger": [],
+   "swelling": false,
+   "swelling_location": null,
+   "progressive_symptoms": false,
+   "pus_or_drainage": false,
+   "fever": false,
+   "temperature_c": null,
+   "trismus": false,
+   "lymphadenopathy": false,
+   "difficulty_swallowing": false,
+   "difficulty_breathing": false,
+   "trauma": false,
+   "tooth_fracture": false,
+   "tooth_avulsion": false,
+   "previous_root_canal": false,
+   "recent_extraction_or_procedure": false,
+   "tooth_region": null,
+   "bleeding": false,
+   "mobility": false,
+   "gingival_involvement": false,
+   "third_molar_symptoms": false,
+   "lesion_present": true,
+   "lesion_duration_weeks": 8,
+   "jaw_clicking": false,
+   "jaw_locking": false,
+   "restoration_or_prosthesis_issue": false,
+   "orthodontic_appliance_issue": false,
+   "administrative_request": false,
+   "info_completeness": "complete",
+   "medical_history": [
+    "tobacco use"
+   ],
+   "allergies": [],
+   "medications": []
+  },
+  "reference": {
+   "urgency": "PRIORITY",
+   "specialty": "oral_pathology",
+   "infection_concern": false,
+   "same_day_review": false,
+   "human_review": true,
+   "complexity": "MODERATE",
+   "referral_priority": "MODERATE",
+   "fired_rules": {
+    "urgency": [
+     "U_P5_persistent_lesion"
+    ],
+    "infection_concern": [],
+    "same_day_review": [],
+    "specialty": [
+     "S05_persistent_lesion_pathology"
+    ],
+    "human_review": [
+     "H4_persistent_lesion"
+    ],
+    "complexity": [
+     "C1_history",
+     "C11_lesion"
+    ],
+    "referral_priority": [
+     "R3_moderate_urgency",
+     "R4_moderate_lesion"
+    ]
+   }
+  }
+ },
+ {
+  "patient_id": "DEMO-09",
+  "category": "orthodontic_complaint",
+  "state": {
+   "patient_id": "DEMO-09",
+   "age": 19,
+   "sex": "female",
+   "chief_complaint": "wire poking into the cheek",
+   "duration": "2 days",
+   "pain_severity": 2,
+   "pain_character": null,
+   "pain_trigger": [],
+   "swelling": false,
+   "swelling_location": null,
+   "progressive_symptoms": false,
+   "pus_or_drainage": false,
+   "fever": false,
+   "temperature_c": null,
+   "trismus": false,
+   "lymphadenopathy": false,
+   "difficulty_swallowing": false,
+   "difficulty_breathing": false,
+   "trauma": false,
+   "tooth_fracture": false,
+   "tooth_avulsion": false,
+   "previous_root_canal": false,
+   "recent_extraction_or_procedure": false,
+   "tooth_region": null,
+   "bleeding": false,
+   "mobility": false,
+   "gingival_involvement": false,
+   "third_molar_symptoms": false,
+   "lesion_present": false,
+   "lesion_duration_weeks": null,
+   "jaw_clicking": false,
+   "jaw_locking": false,
+   "restoration_or_prosthesis_issue": false,
+   "orthodontic_appliance_issue": true,
+   "administrative_request": false,
+   "info_completeness": "complete",
+   "medical_history": [],
+   "allergies": [],
+   "medications": []
+  },
+  "reference": {
+   "urgency": "ROUTINE",
+   "specialty": "orthodontics",
+   "infection_concern": false,
+   "same_day_review": false,
+   "human_review": false,
+   "complexity": "SIMPLE",
+   "referral_priority": "LOW",
+   "fired_rules": {
+    "urgency": [],
+    "infection_concern": [],
+    "same_day_review": [],
+    "specialty": [
+     "S12_orthodontic"
+    ],
+    "human_review": [],
+    "complexity": [],
+    "referral_priority": []
+   }
+  }
+ },
+ {
+  "patient_id": "DEMO-10",
+  "category": "ambiguous_vague",
+  "state": {
+   "patient_id": "DEMO-10",
+   "age": 45,
+   "sex": "female",
+   "chief_complaint": "something doesn't feel right with my teeth",
+   "duration": null,
+   "pain_severity": 3,
+   "pain_character": null,
+   "pain_trigger": [],
+   "swelling": false,
+   "swelling_location": null,
+   "progressive_symptoms": false,
+   "pus_or_drainage": false,
+   "fever": false,
+   "temperature_c": null,
+   "trismus": false,
+   "lymphadenopathy": false,
+   "difficulty_swallowing": false,
+   "difficulty_breathing": false,
+   "trauma": false,
+   "tooth_fracture": false,
+   "tooth_avulsion": false,
+   "previous_root_canal": false,
+   "recent_extraction_or_procedure": false,
+   "tooth_region": null,
+   "bleeding": false,
+   "mobility": false,
+   "gingival_involvement": false,
+   "third_molar_symptoms": false,
+   "lesion_present": false,
+   "lesion_duration_weeks": null,
+   "jaw_clicking": false,
+   "jaw_locking": false,
+   "restoration_or_prosthesis_issue": false,
+   "orthodontic_appliance_issue": false,
+   "administrative_request": false,
+   "info_completeness": "sparse",
+   "medical_history": [],
+   "allergies": [],
+   "medications": []
+  },
+  "reference": {
+   "urgency": "ROUTINE",
+   "specialty": "general_dentistry",
+   "infection_concern": false,
+   "same_day_review": false,
+   "human_review": true,
+   "complexity": "SIMPLE",
+   "referral_priority": "LOW",
+   "fired_rules": {
+    "urgency": [],
+    "infection_concern": [],
+    "same_day_review": [],
+    "specialty": [],
+    "human_review": [
+     "H2_sparse_information"
+    ],
+    "complexity": [
+     "C13_sparse_info"
+    ],
+    "referral_priority": []
+   }
+  }
+ }
+]

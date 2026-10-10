@@ -1,0 +1,173 @@
+# DentoRoute routing policy v2 - CONSERVATIVE safety gate
+#
+# RESEARCH-DEMO THRESHOLDS ONLY. These are NOT clinical thresholds. They were not derived from clinical
+# data, were not reviewed by clinicians, and must not be used for real triage.
+#
+# Rules (first match wins; see backend/services/routing_service.py):
+#   R0 invalid/missing model output -> human review (fail-safe)
+#   R1 human_review_probability high -> escalate to human
+#   R2 infection_probability high -> urgent human review
+#   R3 urgency score / P(URGENT or EMERGENCY) / same-day probability / learned risk score high -> urgent human review
+#   R4 any confidence floor not met, or an uncertain safety answer -> human review
+#   R5 specialty on human_only_specialties -> human review
+#   R6 everything above passed -> automated specialty route
+#
+# Tunable thresholds can only move toward MORE caution: the hard ceilings/floors are in
+# backend/services/policy_service.py (not here), and validate_policy() rejects anything looser.
+# 'tuning' lists what scripts/tune_policy.py may change, on train+calibration data only (never the holdout).
+
+version: 2
+name: conservative
+rules: conservative
+disclaimer: Research-demo thresholds, not clinical thresholds.
+thresholds:
+  human_review_probability: 0.3
+  infection_probability: 0.15
+  same_day_probability: 0.5
+  urgency_score: 1.5
+  urgent_tail_probability: 0.3
+  risk_score: 0.1
+  urgency_confidence_min: 0.7
+  specialty_confidence_min: 0.7
+  specialty_top_probability_min: 0.55
+  boolean_certainty_min: 0.5
+human_only_specialties:
+- emergency_dental_service
+- oral_pathology
+confidence_bands:
+  high: 0.8
+  medium: 0.5
+route_labels:
+  escalate_to_human: HUMAN REVIEW (ESCALATED)
+  urgent_review: URGENT HUMAN REVIEW
+  human_review: HUMAN REVIEW (LOW CONFIDENCE)
+  automated_specialty_route: '{specialty} REVIEW'
+specialty_labels:
+  general_dentistry: GENERAL DENTISTRY
+  endodontics: ENDODONTIC
+  periodontics: PERIODONTAL
+  oral_surgery: ORAL SURGERY
+  prosthodontics: PROSTHODONTIC
+  orthodontics: ORTHODONTIC
+  pediatric_dentistry: PEDIATRIC DENTISTRY
+  oral_medicine: ORAL MEDICINE
+  oral_pathology: ORAL PATHOLOGY
+  emergency_dental_service: EMERGENCY DENTAL SERVICE
+tuning:
+  tunable:
+  - human_review_probability
+  - infection_probability
+  - risk_score
+  - urgency_confidence_min
+  - specialty_confidence_min
+  - boolean_certainty_min
+  grid:
+    human_review_probability:
+    - 0.3
+    - 0.4
+    - 0.5
+    infection_probability:
+    - 0.15
+    - 0.25
+    - 0.35
+    - 0.5
+    risk_score:
+    - 0.1
+    - 0.2
+    - 0.3
+    - 0.4
+    - 0.5
+    urgency_confidence_min:
+    - 0.4
+    - 0.5
+    - 0.6
+    - 0.7
+    specialty_confidence_min:
+    - 0.6
+    - 0.7
+    - 0.8
+    boolean_certainty_min:
+    - 0.2
+    - 0.3
+    - 0.4
+    - 0.5
+  budget_missed_urgent_calibration: 0
+  safety_margin_steps: 1
+  costs:
+    missed_urgent: 100
+    other_false_automation: 20
+    unnecessary_review: 1
+provenance:
+  written_at: '2026-10-06T05:48:51+00:00'
+  data_mode: demo
+  model: demo-simulator (NOT Jev)
+  simulated: true
+  tuned_on:
+  - train
+  - calibration
+  holdout_used_for_selection: false
+  split_seed: 20261006
+  split_counts:
+    train: 210
+    calibration: 157
+    holdout: 158
+  n_candidates: 2880
+  feasible_on_calibration: true
+  selection_objective: min expected cost s.t. missed urgent <= budget on calibration
+  costs:
+    missed_urgent: 100
+    other_false_automation: 20
+    unnecessary_review: 1
+  budget_missed_urgent_calibration: 0
+  safety_margin_steps: 1
+  warning: Selected on SIMULATED Jev outputs. Re-run scripts/tune_policy.py on a live benchmark before
+    relying on these numbers.
+risk_model:
+  features:
+  - urgent_tail
+  - urgency_score
+  - urgency_confidence
+  - specialty_confidence
+  - specialty_top_probability
+  - p_infection
+  - p_same_day
+  - p_human_review
+  - complexity_score
+  - referral_score
+  mean:
+  - 0.11480952380952382
+  - 0.6647619047619049
+  - 0.8888571428571427
+  - 0.7224761904761905
+  - 0.7502476190476196
+  - 0.1411428571428571
+  - 0.14614285714285702
+  - 0.17980952380952372
+  - 0.6974761904761906
+  - 0.6517142857142854
+  scale:
+  - 0.2952661622603637
+  - 0.747891124286716
+  - 0.14601248665269495
+  - 0.2681871448656737
+  - 0.24106811054741867
+  - 0.2495951551945641
+  - 0.21014479944717607
+  - 0.2122306963677159
+  - 0.6191598085153185
+  - 0.6452352205172303
+  coef:
+  - 0.6904709301891353
+  - 0.6218250553238918
+  - -0.3871585801913018
+  - -0.005048731738144985
+  - 0.02940738057984292
+  - 1.3090654462483065
+  - 0.3773776792287447
+  - 1.790331410828687
+  - -0.07598684174338108
+  - 0.8834238809583701
+  intercept: 0.5587201465012351
+  regularization_c: 0.5
+  n_train: 210
+  n_positive: 62
